@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xxxx.yeb.mapper.JoblevelMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.xxxx.yeb.pojo.Joblevel">
+        <id column="id" property="id"/>
+        <result column="name" property="name"/>
+        <result column="titleLevel" property="titleLevel"/>
+        <result column="createDate" property="createDate"/>
+        <result column="enabled" property="enabled"/>
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id, name, titleLevel, createDate, enabled
+    </sql>
+
+    <select id="selectTitleByName" parameterType="String" resultType="String">
+        select titleLevel from t_joblevel where name = #{name}
+    </select>
+
+    <select id="selectIdByName" parameterType="String" resultType="Integer">
+        select id from t_joblevel where name = #{name}
+    </select>
+
+    <select id="selectNameById" parameterType="Integer" resultType="String">
+        select name from t_joblevel where id = #{id}
+    </select>
+
+    <select id="selectTitleById" parameterType="Integer" resultType="String">
+        select titleLevel from t_joblevel where id = #{id}
+    </select>
+
+    <!--删除职称表对于id字段数据-->
+    <delete id="deleteById" parameterType="Integer">
+        delete from t_joblevel
+        where id = #{id};
+    </delete>
+
+    <!--查询是否存在子表-->
+    <select id="selectEmployeeById" parameterType="Integer" resultType="Integer">
+        select count(*) from t_employee
+        where jobLevelId = #{id};
+    </select>
+    <!--更新id为null-->
+    <update id="updateEmployeeById" parameterType="Integer[]">
+        update t_employee
+            <set>
+                <if test="id != null">
+                    jobLevelId = null
+                </if>
+            </set>
+        where jobLevelId = #{id};
+    </update>
+
+
+</mapper>

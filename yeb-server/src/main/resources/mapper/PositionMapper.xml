@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xxxx.yeb.mapper.PositionMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.xxxx.yeb.pojo.Position">
+        <id column="id" property="id" />
+        <result column="name" property="name" />
+        <result column="createDate" property="createDate" />
+        <result column="enabled" property="enabled" />
+    </resultMap>
+
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id, name, createDate, enabled
+    </sql>
+    <!-- 根据职位名称查询指定职位信息-->
+<select id="findByName" parameterType="String" resultType="Position">
+    select <include refid="Base_Column_List"></include> from t_position where name=#{name}
+</select>
+    <!--查询是否已经存在指定职位 -->
+    <select id="getCountByName" parameterType="String" resultType="Integer">
+        select count(*) from t_position where name=#{name}
+    </select>
+<!-- 批量更新 -->
+    <update id="batchUpdateDemo" parameterType="java.util.List"  >
+        update t_position set enabled=0
+       where id in
+       <foreach collection="list" item="item" open="(" separator="," close=")">
+           #{item}
+       </foreach>
+    </update>
+
+</mapper>
